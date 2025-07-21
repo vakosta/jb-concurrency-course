@@ -28,3 +28,7 @@ tasks {
         jvmArgs("-XX:+EnableDynamicAgentLoading")
     }
 }
+
+kotlin {
+    jvmToolchain(21)
+}
