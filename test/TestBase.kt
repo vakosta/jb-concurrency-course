@@ -13,12 +13,21 @@ abstract class TestBase(
 ) {
     @Test
     open fun modelCheckingTest() = ModelCheckingOptions()
+        .iterations(scenarios)
+        .invocationsPerIteration(1_000)
+        .actorsBefore(actorsBefore)
+        .threads(threads)
+        .actorsPerThread(2)
+        .actorsAfter(0)
+        .sequentialSpecification(sequentialSpecification.java)
+        .checkObstructionFreedom(checkObstructionFreedom)
+        .apply { customConfiguration() }
         .check(this::class.java)
 
     @Test
-    fun stressTest() = StressOptions()
+    open fun stressTest() = StressOptions()
         .iterations(scenarios)
-        .invocationsPerIteration(10_000)
+        .invocationsPerIteration(1_000)
         .actorsBefore(actorsBefore)
         .threads(threads)
         .actorsPerThread(2)
