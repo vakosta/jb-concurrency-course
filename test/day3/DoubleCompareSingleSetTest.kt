@@ -24,6 +24,7 @@ class DoubleCompareSingleSetTest : TestBase(
     @Operation
     fun getStatus() = dcss.getStatus()
 
+    @Operation
     fun updateStatus(
         @Param(gen = EnumGen::class, conf = "SUCCESS,FAILED") status: DoubleCompareSingleSet.Cas2Status
     ) = dcss.updateStatus(status)
