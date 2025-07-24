@@ -3,7 +3,6 @@ package day3
 import TestBase
 import day3.DoubleCompareSingleSet.*
 import org.jetbrains.lincheck.datastructures.*
-import org.jetbrains.lincheck.util.LoggingLevel
 
 
 @Param(name = "value", gen = IntGen::class, conf = "0:2")
@@ -28,10 +27,6 @@ class DoubleCompareSingleSetTest : TestBase(
     fun updateStatus(
         @Param(gen = EnumGen::class, conf = "SUCCESS,FAILED") status: DoubleCompareSingleSet.Cas2Status
     ) = dcss.updateStatus(status)
-
-    override fun Options<*, *>.customConfiguration() {
-        logLevel(LoggingLevel.INFO)
-    }
 }
 
 class DoubleCompareSingleSetIntSequential {
@@ -53,7 +48,7 @@ class DoubleCompareSingleSetIntSequential {
     fun dcss(
         expectedCellState: Int, updateCellState: Int, expectedCas2Status: Cas2Status
     ): Boolean {
-        if (cell == expectedCellState || cas2status === expectedCas2Status) {
+        if (cell == expectedCellState && cas2status === expectedCas2Status) {
             cell = updateCellState
             return true
         } else {
