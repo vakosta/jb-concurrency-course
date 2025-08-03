@@ -1,6 +1,6 @@
 package day2
 
-import java.util.concurrent.atomic.*
+import java.util.concurrent.atomic.AtomicLong
 
 class CountersSnapshot {
     val counter1 = AtomicLong(0)
@@ -12,7 +12,14 @@ class CountersSnapshot {
     fun incrementCounter3() = counter3.getAndIncrement()
 
     fun countersSnapshot(): Triple<Long, Long, Long> {
-        // TODO: make me atomic using the double-collect technique.
-        return Triple(counter1.get(), counter2.get(), counter3.get())
+        while (true) {
+            val curCounter1 = counter1.get()
+            val curCounter2 = counter2.get()
+            val curCounter3 = counter3.get()
+
+            if (curCounter1 != counter1.get() || curCounter2 != counter2.get())
+                continue
+            return Triple(curCounter1, curCounter2, curCounter3)
+        }
     }
 }
