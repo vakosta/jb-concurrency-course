@@ -7,20 +7,17 @@ class TreiberStack<E> : Stack<E> {
     private val top = AtomicReference<Node<E>?>(null)
 
     override fun push(element: E) {
-        // TODO: Make me linearizable!
-        // TODO: Update `top` via Compare-and-Set,
-        // TODO: restarting the operation on CAS failure.
-        val curTop = top.get()
-        val newTop = Node(element, curTop)
-        top.set(newTop)
+        do {
+            val curTop = top.get()
+            val newTop = Node(element, curTop)
+        } while (!top.compareAndSet(curTop, newTop))
     }
 
     override fun pop(): E? {
-        // TODO: Make me linearizable!
-        // TODO: Update `top` via Compare-and-Set,
-        // TODO: restarting the operation on CAS failure.
-        val curTop = top.get() ?: return null
-        top.set(curTop.next)
+        var curTop: Node<E>?
+        do {
+            curTop = top.get() ?: return null
+        } while (!top.compareAndSet(curTop, curTop.next))
         return curTop.element
     }
 
